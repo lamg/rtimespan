@@ -20,19 +20,19 @@ import (
 // RSpan is a repeated time span
 type RSpan struct {
 	// Time the repeated span starts
-	Start time.Time
+	Start time.Time `json:"start"`
 	// Duration of the active phase
-	Active time.Duration
+	Active time.Duration `json:"active"`
 	// Duration of the cycle
-	Total time.Duration
+	Total time.Duration `json:"total"`
 	// Number of times the span repeats
-	Times int
+	Times int `json:"times"`
 	// Repeats forever
-	Infinite bool
+	Infinite bool `json:"infinite"`
 	// AllTime indicates whether all times are
 	// contained in this span, i.e. for all times
 	// RSpan.ContainsTime returns true
-	AllTime bool
+	AllTime bool `json:"allTime"`
 }
 
 // ContainsTime returns whether r contains x

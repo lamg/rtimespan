@@ -1,6 +1,7 @@
 package rtimespan
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -69,6 +70,37 @@ func TestRSpan(t *testing.T) {
 		a := j.rs.ContainsTime(j.t)
 		require.True(t, a == j.y, "At %d %t != %t", i, a, j.y)
 	}
+}
+
+func TestJSONMarshal(t *testing.T) {
+	d, e := time.Parse(time.RFC3339, "2006-01-02T15:04:05-04:00")
+	require.NoError(t, e)
+	r, s := &RSpan{
+		Active:   time.Hour,
+		Infinite: false,
+		Start:    d,
+		Times:    10,
+		Total:    24 * time.Hour,
+		AllTime:  false,
+	},
+		`{
+		"active":3600000000000,
+		"infinite":false,
+		"start":"2006-01-02T15:04:05-04:00",
+		"times":10,
+		"total":86400000000000,
+		"allTime":false
+	}`
+	x := new(RSpan)
+	e = json.Unmarshal([]byte(s), x)
+	require.NoError(t, e)
+	require.True(t, r.Active == x.Active, "%d != %d",
+		r.Active, x.Active)
+	require.True(t, r.AllTime == x.AllTime)
+	require.True(t, r.Infinite == x.Infinite)
+	require.True(t, r.Start.Equal(x.Start))
+	require.True(t, r.Times == x.Times)
+	require.True(t, r.Total == x.Total)
 }
 
 func Example() {
