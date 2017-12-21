@@ -44,3 +44,20 @@ func (r *RSpan) ContainsTime(x time.Time) (y bool) {
 			r.Infinite) && m < r.Active)
 	return
 }
+
+// CurrActIntv is the current active interval of this RSpan
+// corresponding to x
+func (r *RSpan) CurrActIntv(x time.Time) (a, b time.Time) {
+	p := x.Sub(r.Start)
+	// { p = distance from r.Start to x }
+	d := p / r.Total
+	// { d = amount of times the span has been repeated
+	//	 completely, since it is integer division, from
+	//   r.Start to x }
+	if d >= time.Duration(r.Times) && !r.Infinite {
+		d = time.Duration(r.Times) - 1
+	}
+	a = r.Start.Add(d * r.Total)
+	b = a.Add(r.Active)
+	return
+}
