@@ -61,3 +61,14 @@ func (r *RSpan) CurrActIntv(x time.Time) (a, b time.Time) {
 	b = a.Add(r.Active)
 	return
 }
+
+// Implementation of Bool interface
+type BRSpan struct {
+	S *RSpan
+	T time.Time
+}
+
+func (b *BRSpan) V() (y bool) {
+	y = b.S.ContainsTime(b.T)
+	return
+}
