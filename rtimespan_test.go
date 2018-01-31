@@ -128,6 +128,27 @@ func TestJSONMarshal(t *testing.T) {
 	require.True(t, r.Total == x.Total)
 }
 
+func TestRSpan0(t *testing.T) {
+	ts := [2]string{"2018-01-22T00:01:00Z",
+		"2018-01-21T01:50:00Z"}
+	tp := make([]time.Time, len(ts))
+	for i, j := range ts {
+		var e error
+		tp[i], e = time.Parse(time.RFC3339, j)
+		require.NoError(t, e)
+	}
+	s := &RSpan{
+		Start:    tp[0],
+		Active:   time.Hour,
+		Total:    48 * time.Hour,
+		Times:    1,
+		AllTime:  false,
+		Infinite: false,
+	}
+	require.False(t, s.ContainsTime(tp[1]))
+	// TODO
+}
+
 func Example() {
 	t0, e := time.Parse(time.RFC3339,
 		"2006-01-02T15:04:05-04:00")
