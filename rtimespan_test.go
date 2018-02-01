@@ -146,7 +146,6 @@ func TestRSpan0(t *testing.T) {
 		Infinite: false,
 	}
 	require.False(t, s.ContainsTime(tp[1]))
-	// TODO
 }
 
 func Example() {

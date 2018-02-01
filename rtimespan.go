@@ -39,9 +39,11 @@ type RSpan struct {
 func (r *RSpan) ContainsTime(x time.Time) (y bool) {
 	p := x.Sub(r.Start)
 	d, m := p/r.Total, p%r.Total
+	// d is the current span number
+	// p is the time spent in the current span
 	y = r.AllTime ||
 		(((r.Times >= 0 && d < time.Duration(r.Times)) ||
-			r.Infinite) && m < r.Active)
+			r.Infinite) && m < r.Active && p >= 0)
 	return
 }
 
